@@ -1,0 +1,16 @@
+.Rproj.user
+.Rproj
+.Rhistory
+.RData
+.Ruserdata
+.xlsx
+.csv
+.sas7bdat
+.txt
+
+Tmp/
+Indata/
+Output/
+Data/
+Slask/
+old/
