@@ -249,21 +249,28 @@ xlsxWriter <- function(dat, name, population){
   #)
   
   
-  levelList <- c("n_PE"
-  ,"n_DM"
-  ,"n_sek_varksvaghet"
-  ,"n_VE_forceps"
-  ,"n_sectio"
-  ,"n_akut_sectio"
-  ,"n_sd"
-  ,"n_blod_pp"
-  ,"n_Perineal"
-  ,"LowApgar"
-  ,"n_Hypox_forl"
-  ,"intrauterin_fdod"
-  ,"neonatalDeath"
-  ,"MSGA"
-  ,"MLGA")
+ # levelList <- c("n_PE"
+ # ,"n_DM"
+ # ,"n_sek_varksvaghet"
+ # ,"n_VE_forceps"
+ # ,"n_sectio"
+ # ,"n_akut_sectio"
+ # ,"n_sd"
+ # ,"n_blod_pp"
+ # ,"n_Perineal"
+ # ,"LowApgar"
+ # ,"n_Hypox_forl"
+ # ,"intrauterin_fdod"
+ # ,"neonatalDeath"
+ # ,"MSGA"
+ # ,"MLGA")
+  
+  levelList <- c("n_PE", "n_DM", "n_sek_varksvaghet", "n_VE_forceps", "n_sectio", 
+    "n_akut_sectio", "n_sd", "n_blod_pp", "LowApgar", "n_Hypox_forl", 
+    "intrauterin_fdod", "neonatalDeath", "MSGA", "MLGA", "Andn_sv", 
+    "Gulsot", "n_blodn_infant", "n_feed_probl", "n_hyperbil", "n_hypoglyc", 
+    "n_hypoterm", "n_infek_infant", "n_Kramp", "n_Mec_asp", "n_NEC", 
+    "n_Nerv", "n_Perineal", "Pnumoth", "RDS")
   
   
   #----------------------------- formatera tabeller ------------------------------
@@ -439,7 +446,7 @@ simpleYeah2 <- function(var =NULL, datPos = datPos, datNeg = datNeg, type = "nor
   #logitNeg <- tryCatch(glm(paste0(var, "~DiffKlass"), data = datNeg, family = "binomial"), error = function(e) "Unable to fit model")
   #logitPos <- tryCatch(glm(paste0(var, "~DiffKlass"), data = datPos, family = "binomial"), error = function(e) "Unable to fit model")
   
-  if(FALSE){ #normal
+  if(type == "normal"){ #normal
   logitNeg1 <- glm_model1(var, datNeg)
   logitPos1 <- glm_model1(var, datPos)
   
@@ -456,7 +463,7 @@ simpleYeah2 <- function(var =NULL, datPos = datPos, datNeg = datNeg, type = "nor
   #dPos <- data.frame(var, name = names(logitPos$coefficients), type = "Positive", OR = exp(coef(logitPos)), exp(confint(logitPos)))
   
   #dlog <- tabler(logit, type = "all", var = var)
-  if(FALSE){ #normal
+  if(type == "normal"){ #normal
   dNeg1 <- tabler(logitNeg1, type = "neg", var = var, modelname = "model1")
   dPos1 <- tabler(logitPos1, type = "pos", var = var, modelname = "model1")
   
@@ -469,7 +476,7 @@ simpleYeah2 <- function(var =NULL, datPos = datPos, datNeg = datNeg, type = "nor
   
   write.csv(var, paste0("Slask/",var, "table_ok.csv")) 
   
-  if(FALSE){ #normal
+  if(type == "normal"){ #normal
   out <- bind_rows(list(dNeg1, dPos1, dNeg2, dPos2, dNeg3, dPos3))
   rm(list = c( "dNeg1", "dPos1", "logitNeg1", "logitPos1", 
                "dNeg2", "dPos2", "logitNeg2", "logitPos2",

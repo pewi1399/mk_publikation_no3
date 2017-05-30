@@ -137,17 +137,26 @@ analyzerYeah <- function(condition, sex, type){
   
   write.csv2(nframe, paste0("Data/N/",condition, type,".csv"))
   
- # binVars <- c("perinatalDeath", "neonatalDeath","MSGA", "MLGA", 
- #              "SGA10_UL", "SGA10_SM", 
- #              "SGA2SD_UL", "SGA2SD_SM", "LGA90_UL", "LGA90_SM", "LGA2SD_UL", 
- #              "LGA2SD_SM", "Pnumoth", "RDS", "Andn_sv", "Gulsot","intrauterin_fdod", "stillborn",
- #              "LowApgar","n_blod_forl", "n_blod_pp", "n_DM", "n_Ind", "n_PE", "n_Perineal", 
- #              "n_prim_varksvaghet", "n_sd", "n_sectio", "n_akut_sectio", "n_sek_varksvaghet", 
- #              "n_utdr_forl", "n_varkrubbning", "n_VE_forceps", "n_blodn_infant", 
- #              "n_EXTREME_SGA", "n_feed_probl", "n_fet_stress", "n_hyperbil", 
- #              "n_hyp_forl_m", "n_hyp_forl_severe", "n_hypoglyc", "n_hypoterm", 
- #              "n_Hypox_forl", "n_Hypox_preg", "n_infek_infant", "n_Kramp", 
- #              "n_LGA", "n_Mec_asp", "n_NEC", "n_Nerv", "n_SGA_IUGR")
+  #extraVars <- c("perinatalDeath", "neonatalDeath","MSGA", "MLGA", 
+  #             "SGA10_UL", "SGA10_SM", 
+  #             "SGA2SD_UL", "SGA2SD_SM", "LGA90_UL", "LGA90_SM", "LGA2SD_UL", 
+  #             "LGA2SD_SM", "Pnumoth", "RDS", "Andn_sv", "Gulsot","intrauterin_fdod", "stillborn",
+  #             "LowApgar","n_blod_forl", "n_blod_pp", "n_DM", "n_Ind", "n_PE", "n_Perineal", 
+  #             "n_prim_varksvaghet", "n_sd", "n_sectio", "n_akut_sectio", "n_sek_varksvaghet", 
+  #             "n_utdr_forl", "n_varkrubbning", "n_VE_forceps", "n_blodn_infant", 
+  #             "n_EXTREME_SGA", "n_feed_probl", "n_fet_stress", "n_hyperbil", 
+  #             "n_hyp_forl_m", "n_hyp_forl_severe", "n_hypoglyc", "n_hypoterm", 
+  #             "n_Hypox_forl", "n_Hypox_preg", "n_infek_infant", "n_Kramp", 
+  #             "n_LGA", "n_Mec_asp", "n_NEC", "n_Nerv", "n_SGA_IUGR")
+  
+  
+  extraVars <- c("Andn_sv", "Gulsot", "intrauterin_fdod", 
+                 "LowApgar", "MLGA", "MSGA", "n_akut_sectio", "n_blod_pp", "n_blodn_infant", 
+                 "n_DM", "n_feed_probl", "n_hyperbil", "n_hypoglyc", "n_hypoterm", 
+                 "n_Hypox_forl", "n_infek_infant", "n_Kramp", "n_Mec_asp", "n_NEC", 
+                 "n_Nerv", "n_PE", "n_Perineal", "n_sd", "n_sectio", "n_sek_varksvaghet", 
+                 "n_VE_forceps", "neonatalDeath", "Pnumoth", "RDS")
+  
   
   binVars <- c("n_PE"
                ,"n_DM"
@@ -164,6 +173,9 @@ analyzerYeah <- function(condition, sex, type){
                ,"MSGA"
                ,"MLGA"
   )
+  
+  binVars <- c(binVars, extraVars)
+  binVars <- binVars[!duplicated(binVars)]
   
   
   
@@ -207,7 +219,6 @@ analyzerYeah <- function(condition, sex, type){
   ll <- lapply(1:length(ll), function(i){ll[[i]]$OR = as.numeric(ll[[i]]$OR)
                                   return(ll[[i]])})
 
-
   #browser()
   
   out <- bind_rows(ll)
@@ -223,7 +234,7 @@ analyzerYeah <- function(condition, sex, type){
 #-------------------------------------------------------------------------------
 
 # ---------------------------- run function ------------------------------------
- system.time(analyzerYeah("Alla", sex = c(0,1), type = "sensitivity"))
+ system.time(analyzerYeah("Alla", sex = c(0,1), type = "normal"))
  gc()
 
  #system.time(analyzerYeah("underburen", sex = c(0,1)))
@@ -236,16 +247,16 @@ analyzerYeah <- function(condition, sex, type){
  #gc()
 
 
- system.time(analyzerYeah("vecka35_38", sex = c(0,1), type = "sensitivity"))
+ system.time(analyzerYeah("vecka35_38", sex = c(0,1), type = "normal"))
  gc()
 
- system.time(analyzerYeah("vecka41_43", sex = c(0,1), type = "sensitivity"))
+ system.time(analyzerYeah("vecka41_43", sex = c(0,1), type = "normal"))
  gc()
 
 
 # #-----------------------------  FEMALES ----------------------------------------
-# system.time(analyzerYeah("Alla", sex = 0))
-# gc()
+ system.time(analyzerYeah("Alla", sex = 0, type = "normal"))
+ gc()
 # 
 # #system.time(analyzerYeah("underburen", sex = 0))
 # #gc()
@@ -256,16 +267,16 @@ analyzerYeah <- function(condition, sex, type){
 # #system.time(analyzerYeah("normal", sex = 0))
 # #gc()
 # 
-# system.time(analyzerYeah("vecka35_38", sex = 0))
-# gc()
+ system.time(analyzerYeah("vecka35_38", sex = 0, type = "normal"))
+ gc()
 # 
-# system.time(analyzerYeah("vecka41_43", sex = 0))
-# gc()
+ system.time(analyzerYeah("vecka41_43", sex = 0, type = "normal"))
+ gc()
 # 
 # 
 # #-------------------------------- MALES ----------------------------------------
-# system.time(analyzerYeah("Alla", sex = 1))
-# gc()
+ system.time(analyzerYeah("Alla", sex = 1, type = "normal"))
+ gc()
 # #system.time(analyzerYeah("underburen", sex = 1))
 # #gc()
 # 
@@ -275,11 +286,11 @@ analyzerYeah <- function(condition, sex, type){
 # #system.time(analyzerYeah("normal", sex = 1))
 # #gc()
 # 
-# system.time(analyzerYeah("vecka35_38", sex = 1))
-# gc()
+ system.time(analyzerYeah("vecka35_38", sex = 1, type = "normal"))
+ gc()
 # 
-# system.time(analyzerYeah("vecka41_43", sex = 1))
-# gc()
+ system.time(analyzerYeah("vecka41_43", sex = 1, type = "normal"))
+ gc()
 
 
 
@@ -294,25 +305,25 @@ analyzerYeah <- function(condition, sex, type){
 #tabs <- readRDS("C:/Users/perwim/Desktop/TMP/MOVE/MERIT/P105_ultraljud_publikation3/Data/tabell/deltabell_20170131_1724_underburen_All.rds")
 
  
- dat$DiffKlass_tmp <- cut(dat$Diff, breaks = c(-20, -6, -1, 3, 6, 20), include.lowest = TRUE)
- 
- # fix data
- #dat$DiffKlass <- cut(dat$Diff, quantile(dat$Diff, probs = c(0, 0.1, 0.45, 0.55, 0.9, 1)))
- dat$DiffKlass_tmp <- factor(dat$DiffKlass_tmp, levels = levels(dat$DiffKlass_tmp)[c(3,1,2,4,5)])
- 
- 
- 
-testModel<-
- dat %>%
-  filter(MALE %in% c(0,1)) %>% # both
-  #filter(GRDBS >= 41*7 & GRDBS < (43*7) + 6) %>% # vecka 41 till 43
-   #filter(GRDBS/7 < 37) %>% #underburen
-   #filter(GRDBS/7 >= 41 & GRDBS/7 <= 44) %>% #41 till 44
-   #filter(as.character(DiffKlass_tmp) %in% c("(-1,3]", "(3,6]", "(6,20]")) %>%  # Positiv diff new
-   #filter(as.character(DiffKlass) %in% c("(-1,3]", "(3,9]", "(9,20]")) %>%  # Positiv diff
-   #filter(as.character(DiffKlass) %in% c("(-1,3]", "[-20,-4]", "(-4,-1]")) %>% # negativ diff
-  filter(as.character(DiffKlass_tmp) %in% c("(-1,3]", "(-6,-1]", "[-20,-6]")) %>%  # negativ new
-   glm(n_PE~DiffKlass_tmp+MSGA+MLGA, data = ., family = "binomial")
+# dat$DiffKlass_tmp <- cut(dat$Diff, breaks = c(-20, -6, -1, 3, 6, 20), include.lowest = TRUE)
+# 
+# # fix data
+# #dat$DiffKlass <- cut(dat$Diff, quantile(dat$Diff, probs = c(0, 0.1, 0.45, 0.55, 0.9, 1)))
+# dat$DiffKlass_tmp <- factor(dat$DiffKlass_tmp, levels = levels(dat$DiffKlass_tmp)[c(3,1,2,4,5)])
+# 
+# 
+# 
+#testModel<-
+# dat %>%
+#  filter(MALE %in% c(0,1)) %>% # both
+#  #filter(GRDBS >= 41*7 & GRDBS < (43*7) + 6) %>% # vecka 41 till 43
+#   #filter(GRDBS/7 < 37) %>% #underburen
+#   #filter(GRDBS/7 >= 41 & GRDBS/7 <= 44) %>% #41 till 44
+#   #filter(as.character(DiffKlass_tmp) %in% c("(-1,3]", "(3,6]", "(6,20]")) %>%  # Positiv diff new
+#   #filter(as.character(DiffKlass) %in% c("(-1,3]", "(3,9]", "(9,20]")) %>%  # Positiv diff
+#   #filter(as.character(DiffKlass) %in% c("(-1,3]", "[-20,-4]", "(-4,-1]")) %>% # negativ diff
+#  filter(as.character(DiffKlass_tmp) %in% c("(-1,3]", "(-6,-1]", "[-20,-6]")) %>%  # negativ new
+#   glm(n_PE~DiffKlass_tmp+MSGA+MLGA, data = ., family = "binomial")
 
 
 #tmp <- glm_model3("LowApgar", testModel)
@@ -348,48 +359,48 @@ testModel<-
 
 #-------------------------------------------------------------------------------
 
-alla <- readRDS("Data/tabell/deltabell_20170504_1338_Alla_All.rds")
+alla <- readRDS("Data/tabell/deltabell_20170530_1614_Alla_All.rds")
 #normal <- readRDS("Data/tabell/deltabell_20170321_1212_normal_All.rds")
 #underburen <- readRDS("Data/tabell/deltabell_20170321_1104_underburen_All.rds")
 #overburen <- readRDS("Data/tabell/deltabell_20170321_1108_overburen_All.rds")
 vecka35_38 <- readRDS("Data/tabell/deltabell_20170504_1340_vecka35_38_All.rds") 
 vecka41_43 <- readRDS("Data/tabell/deltabell_20170504_1344_vecka41_43_All.rds") 
 
-#alla_female <- readRDS("Data/tabell/deltabell_20170321_1312_Alla_FEMALE.rds")
+alla_female <- readRDS("Data/tabell/deltabell_20170321_1312_Alla_FEMALE.rds")
 #normal_female <- readRDS("Data/tabell/deltabell_20170321_1343_normal_FEMALE.rds")
 #underburen_female <- readRDS("Data/tabell/deltabell_20170321_1313_underburen_FEMALE.rds")
 #overburen_female <- readRDS("Data/tabell/deltabell_20170321_1314_overburen_FEMALE.rds")
-#vecka35_38_female <- readRDS("Data/tabell/deltabell_20170321_1353_vecka35_38_FEMALE.rds") 
-#vecka41_43_female <- readRDS("Data/tabell/deltabell_20170321_1359_vecka41_43_FEMALE.rds") 
+vecka35_38_female <- readRDS("Data/tabell/deltabell_20170321_1353_vecka35_38_FEMALE.rds") 
+vecka41_43_female <- readRDS("Data/tabell/deltabell_20170321_1359_vecka41_43_FEMALE.rds") 
 #
-#alla_male <- readRDS("Data/tabell/deltabell_20170321_1435_Alla_MALE.rds")
+alla_male <- readRDS("Data/tabell/deltabell_20170321_1435_Alla_MALE.rds")
 #normal_male <- readRDS("Data/tabell/deltabell_20170321_1509_normal_MALE.rds")
 #underburen_male <- readRDS("Data/tabell/deltabell_20170321_1436_underburen_MALE.rds")
 #overburen_male <- readRDS("Data/tabell/deltabell_20170321_1438_overburen_MALE.rds")
-#vecka35_38_male <- readRDS("Data/tabell/deltabell_20170321_1514_vecka35_38_MALE.rds") 
-#vecka41_43_male <- readRDS("Data/tabell/deltabell_20170321_1522_vecka41_43_MALE.rds") 
+vecka35_38_male <- readRDS("Data/tabell/deltabell_20170321_1514_vecka35_38_MALE.rds") 
+vecka41_43_male <- readRDS("Data/tabell/deltabell_20170321_1522_vecka41_43_MALE.rds") 
 
 
-xlsxWriter(alla, "alla_all", population = "sensitivity")
+xlsxWriter(alla, "alla_all", population = "normal")
 #xlsxWriter(normal, "normal_all")
 #xlsxWriter(underburen, "underburen_all")
 #xlsxWriter(overburen, "overburen_all")
-xlsxWriter(vecka35_38, "vecka35_38_all", population = "sensitivity")
-xlsxWriter(vecka41_43, "vecka41_43_all", population = "sensitivity")
+xlsxWriter(vecka35_38, "vecka35_38_all", population = "normal")
+xlsxWriter(vecka41_43, "vecka41_43_all", population = "normal")
 
-# xlsxWriter(alla_female, "alla_female")
+xlsxWriter(alla_female, "alla_female")
 # xlsxWriter(normal_female, "normal_female")
 # xlsxWriter(underburen_female, "underburen_female")
 # xlsxWriter(overburen_female, "overburen_female")
-# xlsxWriter(vecka35_38_female, "vecka35_38_female")
-# xlsxWriter(vecka41_43_female, "vecka41_43_female")
+xlsxWriter(vecka35_38_female, "vecka35_38_female")
+xlsxWriter(vecka41_43_female, "vecka41_43_female")
 # 
-# xlsxWriter(alla_male, "alla_male")
+xlsxWriter(alla_male, "alla_male")
 # xlsxWriter(normal_male, "normal_male")
 # xlsxWriter(underburen_male, "underburen_male")
 # xlsxWriter(overburen_male, "overburen_male")
-# xlsxWriter(vecka35_38_male, "vecka35_38_male")
-# xlsxWriter(vecka41_43_male, "vecka41_43_male")
+xlsxWriter(vecka35_38_male, "vecka35_38_male")
+xlsxWriter(vecka41_43_male, "vecka41_43_male")
 
 
 # write summary file
@@ -450,8 +461,8 @@ createFiles <- function(cls, population = "normal"){
   saveWorkbook(wb, filename)
 }
 
-createFiles("positiv", population = "sensitivity")
-createFiles("negativ", population = "sensitivity")
+createFiles("positiv", population = "normal")
+createFiles("negativ", population = "normal")
 #--------------------------- beräkna punktprevalenser --------------------------
 calcPrevalence <- function(var,data, sex){
   data <- subset(data,MALE == sex)
