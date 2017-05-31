@@ -359,54 +359,36 @@ analyzerYeah <- function(condition, sex, type){
 
 #-------------------------------------------------------------------------------
 
-alla <- readRDS("Data/tabell/deltabell_20170530_1614_Alla_All.rds")
-#normal <- readRDS("Data/tabell/deltabell_20170321_1212_normal_All.rds")
-#underburen <- readRDS("Data/tabell/deltabell_20170321_1104_underburen_All.rds")
-#overburen <- readRDS("Data/tabell/deltabell_20170321_1108_overburen_All.rds")
-vecka35_38 <- readRDS("Data/tabell/deltabell_20170504_1340_vecka35_38_All.rds") 
-vecka41_43 <- readRDS("Data/tabell/deltabell_20170504_1344_vecka41_43_All.rds") 
+alla <- readRDS("Data/tabell/deltabell_20170530_1819_Alla_All.rds")
+vecka35_38 <- readRDS("Data/tabell/deltabell_20170530_1840_vecka35_38_All.rds") 
+vecka41_43 <- readRDS("Data/tabell/deltabell_20170530_1909_vecka41_43_All.rds") 
 
-alla_female <- readRDS("Data/tabell/deltabell_20170321_1312_Alla_FEMALE.rds")
-#normal_female <- readRDS("Data/tabell/deltabell_20170321_1343_normal_FEMALE.rds")
-#underburen_female <- readRDS("Data/tabell/deltabell_20170321_1313_underburen_FEMALE.rds")
-#overburen_female <- readRDS("Data/tabell/deltabell_20170321_1314_overburen_FEMALE.rds")
-vecka35_38_female <- readRDS("Data/tabell/deltabell_20170321_1353_vecka35_38_FEMALE.rds") 
-vecka41_43_female <- readRDS("Data/tabell/deltabell_20170321_1359_vecka41_43_FEMALE.rds") 
+alla_female <- readRDS("Data/tabell/deltabell_20170530_2004_Alla_FEMALE.rds")
+vecka35_38_female <- readRDS("Data/tabell/deltabell_20170530_2012_vecka35_38_FEMALE.rds") 
+vecka41_43_female <- readRDS("Data/tabell/deltabell_20170530_2023_vecka41_43_FEMALE.rds") 
 #
-alla_male <- readRDS("Data/tabell/deltabell_20170321_1435_Alla_MALE.rds")
-#normal_male <- readRDS("Data/tabell/deltabell_20170321_1509_normal_MALE.rds")
-#underburen_male <- readRDS("Data/tabell/deltabell_20170321_1436_underburen_MALE.rds")
-#overburen_male <- readRDS("Data/tabell/deltabell_20170321_1438_overburen_MALE.rds")
-vecka35_38_male <- readRDS("Data/tabell/deltabell_20170321_1514_vecka35_38_MALE.rds") 
-vecka41_43_male <- readRDS("Data/tabell/deltabell_20170321_1522_vecka41_43_MALE.rds") 
+alla_male <- readRDS("Data/tabell/deltabell_20170530_2122_Alla_MALE.rds")
+vecka35_38_male <- readRDS("Data/tabell/deltabell_20170530_2132_vecka35_38_MALE.rds") 
+vecka41_43_male <- readRDS("Data/tabell/deltabell_20170530_2148_vecka41_43_MALE.rds") 
 
 
 xlsxWriter(alla, "alla_all", population = "normal")
-#xlsxWriter(normal, "normal_all")
-#xlsxWriter(underburen, "underburen_all")
-#xlsxWriter(overburen, "overburen_all")
 xlsxWriter(vecka35_38, "vecka35_38_all", population = "normal")
 xlsxWriter(vecka41_43, "vecka41_43_all", population = "normal")
 
-xlsxWriter(alla_female, "alla_female")
-# xlsxWriter(normal_female, "normal_female")
-# xlsxWriter(underburen_female, "underburen_female")
-# xlsxWriter(overburen_female, "overburen_female")
-xlsxWriter(vecka35_38_female, "vecka35_38_female")
-xlsxWriter(vecka41_43_female, "vecka41_43_female")
-# 
-xlsxWriter(alla_male, "alla_male")
-# xlsxWriter(normal_male, "normal_male")
-# xlsxWriter(underburen_male, "underburen_male")
-# xlsxWriter(overburen_male, "overburen_male")
-xlsxWriter(vecka35_38_male, "vecka35_38_male")
-xlsxWriter(vecka41_43_male, "vecka41_43_male")
+xlsxWriter(alla_female, "alla_female", population = "normal")
+xlsxWriter(vecka35_38_female, "vecka35_38_female", population = "normal")
+xlsxWriter(vecka41_43_female, "vecka41_43_female", population = "normal")
+
+xlsxWriter(alla_male, "alla_male", population = "normal")
+xlsxWriter(vecka35_38_male, "vecka35_38_male", population = "normal")
+xlsxWriter(vecka41_43_male, "vecka41_43_male", population = "normal")
 
 
 # write summary file
 createFiles <- function(cls, population = "normal"){
   
-  files <- grep(paste0("^",cls ,"_diff_"), list.files("Output"), value = TRUE)
+  files <- grep(paste0("^",cls ,"_diff_[av]"), list.files("Output"), value = TRUE)
   
   if(population == "sensitivity"){
     files <- grep("alla|vecka", files, value = TRUE)
@@ -415,8 +397,8 @@ createFiles <- function(cls, population = "normal"){
   ll = lapply(files, function(x){openxlsx::read.xlsx(paste0("Output/",x))})
   
   list_all <- grep("_all.xlsx$", files)
-  #list_female <- grep("_female.xlsx$", files)
-  #list_male <- grep("_male.xlsx$", files)
+  list_female <- grep("_female.xlsx$", files)
+  list_male <- grep("_male.xlsx$", files)
   
   # LowApgar saknas för vissa lägg till en extra rad
   ll <- lapply(ll, function(x){
@@ -437,13 +419,13 @@ createFiles <- function(cls, population = "normal"){
   })
     
 
-  out_all <- do.call("cbind", ll[list_all[c(1,2,3)]])
-  #out_female <- do.call("cbind", ll[list_female[c(1,2,4,3,5,6)]])
-  #out_male <- do.call("cbind", ll[list_male[c(1,2,4,3,5,6)]])
+  out_all <- do.call("cbind", ll[list_all])
+  out_female <- do.call("cbind", ll[list_female])
+  out_male <- do.call("cbind", ll[list_male])
   
   out_all <- out_all[,!grepl("^type$", names(out_all))]
-  #out_female<- out_female[,!grepl("^type$", names(out_female))]
-  #out_male <- out_male[,!grepl("^type$", names(out_male))]
+  out_female<- out_female[,!grepl("^type$", names(out_female))]
+  out_male <- out_male[,!grepl("^type$", names(out_male))]
   
   
   filename <- paste0("Output/","Tabell_", cls, "_" ,format(Sys.time(), "%Y%m%d_%H%M"), ".xlsx")
@@ -451,12 +433,12 @@ createFiles <- function(cls, population = "normal"){
   wb <- openxlsx::createWorkbook()
   
   openxlsx::addWorksheet(wb,"all")
-  #openxlsx::addWorksheet(wb,"female")
-  #openxlsx::addWorksheet(wb,"male")
+  openxlsx::addWorksheet(wb,"female")
+  openxlsx::addWorksheet(wb,"male")
   
   writeData(wb, "all", out_all)
-  #writeData(wb, "female", out_female)
-  #writeData(wb, "male", out_male)
+  writeData(wb, "female", out_female)
+  writeData(wb, "male", out_male)
   
   saveWorkbook(wb, filename)
 }
